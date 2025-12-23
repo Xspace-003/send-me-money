@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Send Me Money</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Counter */
+.counter {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.6);
+    padding: 10px 25px;
+    border-radius: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+/* Motivation */
+.motivation {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.15);
+    padding: 12px 22px;
+    border-radius: 18px;
+    text-align: center;
+    font-size: 15px;
+    backdrop-filter: blur(6px);
+    z-index: 10;
+}
+
+/* Dog */
+.dog {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 80px;
+    animation: float 3s ease-in-out infinite;
+    z-index: 10;
+}
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Main box */
+.container {
+    background: rgba(0,0,0,0.35);
+    padding: 32px;
+    border-radius: 22px;
+    width: 360px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+.logo {
+    font-size: 52px;
+}
+
+/* Pulsating button */
+button {
+    margin-top: 20px;
+    padding: 16px;
+    width: 100%;
+    font-size: 16px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    background: #00ff99;
+    color: black;
+    font-weight: bold;
+    animation: pulse 1.6s infinite;
+}
+button:hover {
+    background: #00cc77;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0,255,153,0.7); }
+    70% { box-shadow: 0 0 0 18px rgba(0,255,153,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,255,153,0); }
+}
+
+.robot {
+    font-size: 52px;
+}
+
+/* Fake donation popup */
+.live-donation {
+    position: fixed;
+    bottom: -80px;
+    left: 20px;
+    background: rgba(0,0,0,0.75);
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-size: 14px;
+    animation: slideUp 5s forwards;
+    z-index: 20;
+}
+
+@keyframes slideUp {
+    0% { bottom: -80px; opacity: 0; }
+    20% { bottom: 20px; opacity: 1; }
+    80% { bottom: 20px; opacity: 1; }
+    100% { bottom: 0px; opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="counter" id="counter">
+    Collected: $12573
+</div>
+
+<div class="motivation">
+    If you’re having a good day today — make it even better for me 🙂
+</div>
+
+<img class="dog"
+src="https://png.pngtree.com/png-vector/20230912/ourmid/pngtree-pet-dog-simple-sticker-happy-vector-png-image_10071571.png"
+alt="Coffee Dog">
+
+<div class="container" id="box">
+    <div class="logo">💸</div>
+    <h1>Send Me Money</h1>
+    <p>
+        If you have some money and don’t know what to do with it — send it to me 🙂<br>
+        I’ll be grateful and say thank you ❤️
+    </p>
+    <button onclick="donate()">Send money</button>
+</div>
+
+<!-- MP3 Music -->
+<audio id="music" autoplay loop muted>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let total = 12573;
+
+// Donate button
+function donate() {
+    total += Math.floor(Math.random() * 5) + 1;
+    document.getElementById("counter").innerText = "Collected: $" + total;
+
+    window.open("https://buymeacoffee.com/sendmemoney3", "_blank");
+
+    document.getElementById("box").innerHTML = `
+        <div class="robot">🤖</div>
+        <h3>Thank you!</h3>
+        <p>❤️ You made my day!</p>
+    `;
+}
+
+// Enable music on first click
+document.addEventListener("click", () => {
+    const music = document.getElementById("music");
+    music.muted = false;
+}, { once: true });
+
+// Fake live donations
+const names = ["Alex", "Michael", "Emma", "Daniel", "Sophia", "James", "Oliver", "Liam"];
+const amounts = [1, 2, 5, 10, 20, 50];
+
+function fakeDonation() {
+    const name = names[Math.floor(Math.random() * names.length)];
+    const amount = amounts[Math.floor(Math.random() * amounts.length)];
+
+    total += amount;
+    document.getElementById("counter").innerText = "Collected: $" + total;
+
+    const popup = document.createElement("div");
+    popup.className = "live-donation";
+    popup.innerText = `${name} just donated $${amount} ❤️`;
+
+    document.body.appendChild(popup);
+
+    setTimeout(() => popup.remove(), 5000);
+}
+
+// Run fake donations every 6–10 seconds
+setInterval(fakeDonation, Math.random() * 4000 + 6000);
+</script>
+
+</body>
+</html>
